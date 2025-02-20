@@ -167,6 +167,7 @@ export default {
   display: flex;
   position: relative;
   // z-index: -1;
+  overflow: hidden;
 }
 .service-section__bg {
   position: absolute;

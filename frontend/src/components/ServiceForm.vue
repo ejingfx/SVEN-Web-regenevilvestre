@@ -39,10 +39,12 @@
           />
         </div>
 
-        <div v-if="message.show" class="service-form__message">
-          <p v-if="message.success">Successfully submitted!</p>
-          <p v-else-if="message.submitting">Submitting...</p>
-          <p v-else>Fields with * are required. Please try again!</p>
+        <div class="service-form__message">
+          <div v-if="message.show" class="service-form__message-inner">
+            <p v-if="message.success">Successfully submitted!</p>
+            <p v-else-if="message.submitting">Submitting...</p>
+            <p v-else>Fields with * are required. Please try again!</p>
+          </div>
         </div>
 
         <div class="service-form__submit">
@@ -100,7 +102,6 @@ export default defineComponent({
         times: form.value.times || [],
         notes: form.value.notes || ''
       }
-      // console.log(formFields)
       return formFields
     }
 
@@ -119,11 +120,12 @@ export default defineComponent({
       } else {
         message.value.show = true
         message.value.submitting = true
+        console.log('data', data)
 
         setTimeout(() => {
           message.value.show = false
           message.value.submitting = false
-          console.log('submitting..')
+          console.log('submitting...')
         }, 3000)
       }
     }
@@ -147,8 +149,7 @@ export default defineComponent({
     }
 
     const setValue = e => {
-      console.log('setValue', e)
-      if (e.field === 'frequency') {
+      if (e.field === 'frequency' || e.field === 'date') {
         form.value[e.field] = e.value
         console.log(`Field "${e.field}" updated to:`, e.value)
       } else if (e.field === 'days' || e.field === 'times') {
@@ -157,8 +158,6 @@ export default defineComponent({
       } else if (e.field === 'notes') {
         form.value[e.field] = (e.value === undefined || e.value.trim() === '') ? '' : e.value
         console.log(`Field "${e.field}" updated to:`, e.value)
-      } else if (e.field === 'date') {
-        console.log('setValue', e)
       }
     }
 
@@ -222,5 +221,9 @@ export default defineComponent({
     text-decoration: none;
     color: #fff;
   }
+}
+.service-form__message {
+  min-height: 40px;
+  padding: 0;
 }
 </style>

@@ -77,7 +77,6 @@ export default defineComponent({
 
     watch(selectedTimes, newValue => {
       emit('input', { field: props.field, value: newValue })
-      console.log('selectedTimes', props.field, newValue)
     })
 
     watch(() => props.value, newValue => {

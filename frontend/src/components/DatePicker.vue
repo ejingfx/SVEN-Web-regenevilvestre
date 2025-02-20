@@ -4,9 +4,9 @@
     <div class="datepicker__input">
       <Datepicker
         v-model="selectedDate"
-        :minimum-date="minDate"
+        :lowerLimit="minDate"
         :disabled-dates="disablePastDates"
-        :format="formatDisplay"
+        :inputFormat="options.inputFormat"
         @update:modelValue="handleDateChange"
       />
     </div>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ref, defineComponent, computed } from 'vue'
+import { ref, defineComponent, computed, onMounted } from 'vue'
 import Datepicker from 'vue3-datepicker'
 
 export default defineComponent({
@@ -29,24 +29,21 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
-    // Set today's date as the minimum date to disable all past dates
+    const options = ref({
+      inputFormat: 'MM/dd/yyyy'
+    })
     const minDate = new Date()
     const selectedDate = ref(new Date())
     const today = new Date()
-    today.setHours(0, 0, 0, 0) // Reset time to midnight
+    today.setHours(0, 0, 0, 0)
 
     const disablePastDates = {
       to: today
     }
 
     const handleDateChange = () => {
-      // emit('input', formattedDate.value)
       emit('input', { field: props.field, value: formattedDate.value })
     }
-
-    // onMounted(() => {
-    //   emit('input', { field: props.field, value: selectedDate.value })
-    // })
 
     const formatDisplay = (date) => {
       if (!date) return ''
@@ -57,7 +54,6 @@ export default defineComponent({
       return `${month}/${day}/${year}`
     }
 
-    // Computed property to display the value as MM-DD-YYYY
     const formattedDate = computed(() => {
       if (!selectedDate.value) return ''
       const d = new Date(selectedDate.value)
@@ -67,13 +63,19 @@ export default defineComponent({
       return `${month}-${day}-${year}`
     })
 
+    onMounted(() => {
+      emit('input', { field: props.field, value: formattedDate.value })
+    })
+
     return {
+      options,
       minDate,
       selectedDate,
       disablePastDates,
       formatDisplay,
       formattedDate,
-      handleDateChange
+      handleDateChange,
+      onMounted
     }
   }
 })
