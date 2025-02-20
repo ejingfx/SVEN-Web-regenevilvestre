@@ -8,8 +8,12 @@
     </span>
   </a>
 </template>
+
 <script>
-export default {
+import { defineComponent, computed } from 'vue'
+
+export default defineComponent({
+  name: 'ScheduleButton',
   props: {
     text: {
       type: String,
@@ -24,15 +28,19 @@ export default {
       default: ''
     }
   },
-  computed: {
-    buttonClass () {
-      return `schedule schedule--${this.className}`
-    },
-    link () {
-      return this.url
+  setup (props) {
+    // Computed property for the button's class
+    const buttonClass = computed(() => `schedule schedule--${props.className}`)
+
+    // Computed property for the link
+    const link = computed(() => props.url)
+
+    return {
+      buttonClass,
+      link
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -43,6 +43,7 @@
           <div v-if="message.show" class="service-form__message-inner">
             <p v-if="message.success">Successfully submitted!</p>
             <p v-else-if="message.submitting">Submitting...</p>
+            <p v-else-if="message.error">Submitting...</p>
             <p v-else>Fields with * are required. Please try again!</p>
           </div>
         </div>
@@ -53,7 +54,6 @@
             value="Schedule Service"
           >
         </div>
-        <pre>{{ message }}</pre>
       </form>
 
     </div>
@@ -61,7 +61,13 @@
 </template>
 
 <script>
-import { ref, defineComponent, computed, nextTick } from 'vue'
+import {
+  ref,
+  defineComponent,
+  computed,
+  nextTick,
+  getCurrentInstance
+} from 'vue'
 import DatePicker from '@/components/DatePicker.vue'
 import TimesInput from '@/components/TimesInput.vue'
 import TextareaInput from '@/components/TextareaInput.vue'
@@ -74,10 +80,14 @@ export default defineComponent({
     TextareaInput
   },
   setup () {
+    const instance = getCurrentInstance()
+    const root = instance?.appContext.config.globalProperties
+
     const message = ref({
       show: false,
       success: false,
-      submitting: false
+      submitting: false,
+      error: false
     })
 
     const form = ref({
@@ -97,7 +107,7 @@ export default defineComponent({
     const extractFields = form => {
       const formFields = {
         frequency: form.value.frequency || [],
-        date: form.value.date,
+        start_date: form.value.date,
         days: form.value.days || [],
         times: form.value.times || [],
         notes: form.value.notes || ''
@@ -112,7 +122,7 @@ export default defineComponent({
       validForm.value.days = data.days.length > 0
 
       if (!isFormValid.value) {
-        console.log('form invalid')
+        // console.log('form invalid')
         message.value.show = true
         setTimeout(() => {
           message.value.show = false
@@ -120,24 +130,12 @@ export default defineComponent({
       } else {
         message.value.show = true
         message.value.submitting = true
-        console.log('data', data)
-
-        setTimeout(() => {
-          message.value.show = false
-          message.value.submitting = false
-          console.log('submitting...')
-        }, 3000)
+        // console.log('data', data)
+        store(data)
       }
     }
 
     const clear = () => {
-      form.value = {
-        frequency: 'Recurring',
-        date: '',
-        days: [],
-        times: [],
-        notes: ''
-      }
       console.log('clear')
     }
 
@@ -162,9 +160,38 @@ export default defineComponent({
     }
 
     const isFormValid = computed(() => {
-      // console.log('isValid', Object.values(validForm.value).every(val => val === true))
       return Object.values(validForm.value).every(val => val === true)
     })
+
+    const store = async (data) => {
+      console.log('submitting...')
+
+      try {
+        const response = await root.$axios.post('/schedules', data)
+        console.log('Data successfully stored:', response.data)
+
+        if (response.data.success) {
+          message.value.success = true
+          message.value.error = false
+          message.value.submitting = false
+
+          setTimeout(() => {
+            message.value.show = false
+            message.value.success = false
+            clear()
+          }, 3000)
+        }
+      } catch (error) {
+        console.error('Error storing data:', error)
+        message.value.error = true
+        message.value.submitting = false
+
+        setTimeout(() => {
+          message.value.show = false
+          message.value.error = false
+        }, 3000)
+      }
+    }
 
     return {
       form,
@@ -173,7 +200,8 @@ export default defineComponent({
       message,
       handleInput,
       setValue,
-      isFormValid
+      isFormValid,
+      store
     }
   }
 })
