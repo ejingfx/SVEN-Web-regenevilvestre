@@ -19,7 +19,10 @@ DB_DATABASE=api_test
 DB_USERNAME=dbuser
 DB_PASSWORD=password
 ```
-3. Run docker compose up -d
+3. Run in the command line
+```
+docker compose up -d
+```
 4. Inside the running docker container, execute command
 ```
 docker compose exec php bash
