@@ -46,7 +46,7 @@ php artisan l5-swagger:generate
 
 # FRONTEND
 ## Pre-requisite
-- npm or yarn installed on your machine
+- node, npm or yarn, installed on your machine
 
 ## Get Started
 1. In the frontend folder
