@@ -3,7 +3,7 @@
     :class="`times-input times-input--${field}`"
   >
     <p class="times-input__label">
-      <span>{{ field }} <i v-if="field !== 'frequency'">Select all that apply</i></span>
+      <span>{{ field }}* <i v-if="field !== 'frequency'">Select all that apply</i></span>
     </p>
     <div class="times-input__list">
       <div v-for="(option, index) in options[field]" :key="index" class="times-input__list-item">

@@ -300,6 +300,11 @@ export default {
     list-style-type: disc;
     list-style-position: inside;
     letter-spacing: 0.025em;
+    line-height: 4em;
+
+    @include phone {
+      line-height: 2em;
+    }
   }
 }
 .service-section__right {

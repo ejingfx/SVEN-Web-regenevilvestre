@@ -16,7 +16,7 @@
             </div>
             <div class="grid__item">
               <div class="form-control__input">
-                <DateInput />
+                <DatePicker @input="setValue" />
               </div>
             </div>
           </div>
@@ -39,31 +39,45 @@
           />
         </div>
 
+        <div v-if="message.show" class="service-form__message">
+          <p v-if="message.success">Successfully submitted!</p>
+          <p v-else-if="message.submitting">Submitting...</p>
+          <p v-else>Fields with * are required. Please try again!</p>
+        </div>
+
         <div class="service-form__submit">
           <input
             type="submit"
             value="Schedule Service"
           >
         </div>
+        <pre>{{ message }}</pre>
       </form>
+
     </div>
   </div>
 </template>
 
 <script>
-import { ref, nextTick } from 'vue'
-import DateInput from '@/components/DateInput.vue'
+import { ref, defineComponent, computed, nextTick } from 'vue'
+import DatePicker from '@/components/DatePicker.vue'
 import TimesInput from '@/components/TimesInput.vue'
 import TextareaInput from '@/components/TextareaInput.vue'
 
-export default {
+export default defineComponent({
   name: 'ServiceForm',
   components: {
-    DateInput,
+    DatePicker,
     TimesInput,
     TextareaInput
   },
   setup () {
+    const message = ref({
+      show: false,
+      success: false,
+      submitting: false
+    })
+
     const form = ref({
       frequency: 'Recurring',
       date: '',
@@ -72,20 +86,46 @@ export default {
       notes: ''
     })
 
+    const validForm = ref({
+      date: true,
+      days: false,
+      times: false
+    })
+
     const extractFields = form => {
       const formFields = {
-        frequency: form.value.frequency === undefined ? [] : form.value.frequency,
+        frequency: form.value.frequency || [],
         date: form.value.date,
-        days: form.value.days === undefined ? [] : form.value.days,
-        times: form.value.times === undefined ? [] : form.value.times,
-        notes: form.value.notes === undefined ? '' : form.value.notes
+        days: form.value.days || [],
+        times: form.value.times || [],
+        notes: form.value.notes || ''
       }
-      console.log(formFields)
+      // console.log(formFields)
       return formFields
     }
 
     const submit = () => {
-      extractFields(form)
+      const data = extractFields(form)
+
+      validForm.value.times = data.times.length > 0
+      validForm.value.days = data.days.length > 0
+
+      if (!isFormValid.value) {
+        console.log('form invalid')
+        message.value.show = true
+        setTimeout(() => {
+          message.value.show = false
+        }, 3000)
+      } else {
+        message.value.show = true
+        message.value.submitting = true
+
+        setTimeout(() => {
+          message.value.show = false
+          message.value.submitting = false
+          console.log('submitting..')
+        }, 3000)
+      }
     }
 
     const clear = () => {
@@ -107,6 +147,7 @@ export default {
     }
 
     const setValue = e => {
+      console.log('setValue', e)
       if (e.field === 'frequency') {
         form.value[e.field] = e.value
         console.log(`Field "${e.field}" updated to:`, e.value)
@@ -116,18 +157,27 @@ export default {
       } else if (e.field === 'notes') {
         form.value[e.field] = (e.value === undefined || e.value.trim() === '') ? '' : e.value
         console.log(`Field "${e.field}" updated to:`, e.value)
+      } else if (e.field === 'date') {
+        console.log('setValue', e)
       }
     }
+
+    const isFormValid = computed(() => {
+      // console.log('isValid', Object.values(validForm.value).every(val => val === true))
+      return Object.values(validForm.value).every(val => val === true)
+    })
 
     return {
       form,
       submit,
       clear,
+      message,
       handleInput,
-      setValue
+      setValue,
+      isFormValid
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
