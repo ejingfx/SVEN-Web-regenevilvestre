@@ -1,0 +1,173 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #cecece;
+  // background-color: #f7f7f7;
+  font-family: "Open Sans", serif;
+  font-optical-sizing: auto;
+  // overflow-x: hidden;
+}
+
+p {
+  margin: 0;
+}
+  
+ol, ul {
+  list-style: none;
+  padding-inline-start: 0;
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.container {
+  position: relative;
+  width: $site-size;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+  z-index: 0;
+
+  @include tablet {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @include phone{
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.menu {
+  align-self: center;
+}
+.menu__item {
+  display: inline-block;
+  vertical-align: middle;
+  
+  &:not(:last-child) {
+    padding-right: 20px;
+
+    @include phone {
+      padding-right: 10px;
+    }
+  }
+}
+.menu__link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.media {
+  display: flex;
+  background-color: #fff;
+}
+.media__content {
+  display: flex;
+  justify-content: space-evenly;
+  letter-spacing: 0.025em;
+  line-height: 1.5;
+
+  @include tablet {
+    // padding-left: 20px;
+    // padding-right: 20px;
+  }
+
+  @include phone {
+    flex-direction: column;
+  }
+}
+
+.media__left, .media__right {
+  padding-top: 100px;
+  padding-bottom: 100px;
+
+  @include phone {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
+.media__left {
+  width: 60%;
+  padding-right: 100px;
+
+  @include phone {
+    width: 100%;
+    padding-right: 0;
+  }
+}
+.media__right {
+  width: 40%;
+
+  @include phone {
+    width: 100%;
+  }
+}
+
+.media__title {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.media__cta {
+  padding-top: 40px;
+
+  @include phone {
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+// MODIFIERS
+.media--feature {
+  // z-index: -1;
+  position: relative;
+
+  .media__right {
+    z-index: 0;
+    padding-top: 80px;
+
+    @include phone {
+      padding-top: 0;
+      padding-bottom: 40px;
+    }
+  }
+}
+.media--form {
+  z-index: -1;
+  .media__left {
+    width: 40%;
+    padding-right: 100px;
+
+    @include phone {
+      width: 100%;
+      padding-right: 0;
+    }
+  }
+  .media__right {
+    width: 60%;
+    @include phone {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+.hidden {
+    display: none !important;
+}
+
+.pc-only {
+    display: inherit;
+    visibility: visible;
+
+    @include tablet {
+        display: none;
+        visibility: none
+    }
+
+    @include phone {
+        display: none;
+        visibility: none
+    }
+}
+
+.sp-only {
+    display: none;
+    visibility: none;
+
+    @include phone {
+        display: inherit;
+        visibility: visible;
+    }
+}

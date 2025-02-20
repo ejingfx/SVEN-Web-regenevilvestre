@@ -1,0 +1,19 @@
+$body-color: #eaf1fb;
+$default-border: thin solid rgba(0, 0, 0, 0.12);
+$site-size: 1120px;
+$default-blue: #494e67;
+$default-pink: #f7e9e8;
+$color-nude-pink: #cba299;
+
+// Define mixins before using them
+@mixin phone {
+    @media screen and (max-width: 600px) {
+      @content;
+    }
+  }
+  
+@mixin tablet {
+    @media screen and (min-width: 601px) and (max-width: 1024px) {
+        @content;
+    }
+}
