@@ -43,8 +43,8 @@
           <div v-if="message.show" class="service-form__message-inner">
             <p v-if="message.success">Successfully submitted!</p>
             <p v-else-if="message.submitting">Submitting...</p>
-            <p v-else-if="message.error">Submitting...</p>
-            <p v-else>Fields with * are required. Please try again!</p>
+            <p v-else-if="message.error">Something went wrong. Please try again!</p>
+            <p v-else>Fields with * are required.</p>
           </div>
         </div>
 
