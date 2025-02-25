@@ -2,6 +2,7 @@
   <a
     :class="buttonClass"
     :href="link"
+    v-smooth-scroll
   >
     <span class="schedule__text">
       {{ text }}

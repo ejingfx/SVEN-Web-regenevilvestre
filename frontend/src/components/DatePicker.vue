@@ -118,4 +118,15 @@ export default defineComponent({
   border-radius: 8px;
   // border: 1px solid #ddd;
 }
+
+.datepicker .v3dp__datepicker {
+  .v3dp__popout.v3dp__popout-day {
+    @include tablet {
+      right: 0 !important;
+    }
+    @include phone {
+      right: 0 !important;
+    }
+  }
+}
 </style>

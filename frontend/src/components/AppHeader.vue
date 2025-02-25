@@ -4,8 +4,8 @@
     <div class="app-header__menu">
       <nav class="menu">
         <ul class="menu__list">
-          <li class="menu__item"><a class="menu__link" href="#about">About us</a></li>
-          <li class="menu__item"><a class="menu__link" href="#form">Schedule a visit</a></li>
+          <li class="menu__item"><a class="menu__link"  v-smooth-scroll href="#about">About us</a></li>
+          <li class="menu__item"><a class="menu__link"  v-smooth-scroll href="#form">Schedule a visit</a></li>
         </ul>
       </nav>
     </div>

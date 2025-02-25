@@ -1,7 +1,8 @@
 <template>
   <a
     :class="buttonClass"
-    href="#"
+    :href="url"
+    v-smooth-scroll
   >
     <div class="app-logo__img">
       <img alt="Pawtastic" src="../assets/images/logo.png">
@@ -16,6 +17,10 @@ import { computed, defineComponent } from 'vue'
 export default defineComponent({
   name: 'AppLogo',
   props: {
+    url: {
+      type: String,
+      default: '#top'
+    },
     className: {
       type: String,
       default: ''
