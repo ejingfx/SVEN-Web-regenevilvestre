@@ -50,6 +50,7 @@
 
         <div class="service-form__submit">
           <input
+            :disabled="disabledSubmit.submitting"
             type="submit"
             value="Schedule Service"
           >
@@ -163,6 +164,10 @@ export default defineComponent({
       return Object.values(validForm.value).every(val => val === true)
     })
 
+    const disabledSubmit = computed(() => {
+      return message.value
+    })
+
     const store = async (data) => {
       console.log('submitting...')
 
@@ -201,7 +206,8 @@ export default defineComponent({
       handleInput,
       setValue,
       isFormValid,
-      store
+      store,
+      disabledSubmit
     }
   }
 })
@@ -248,6 +254,12 @@ export default defineComponent({
     background-color: $default-blue;
     text-decoration: none;
     color: #fff;
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #333;
+      opacity: 0.6;
+    }
   }
 }
 .service-form__message {
